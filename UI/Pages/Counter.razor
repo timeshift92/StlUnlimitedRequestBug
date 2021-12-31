@@ -1,4 +1,4 @@
-﻿@page "/counter"
+@page "/counter"
 @using System.Threading
 @using FusionHybrid.Abstractions
 @inherits ComputedStateComponent<string>
@@ -20,6 +20,7 @@
     <div class="alert alert-warning" role="alert">Update error: @error.Message</div>
 }
 
+
 <p>Count: @state</p>
 
 <button class="btn btn-primary" @onclick="Increment">Increment</button>
@@ -27,12 +28,12 @@
 @code {
      protected override async Task<string> ComputeState(CancellationToken cancellationToken)
      {
-         var count = await _counter.GetCountAsync(cancellationToken);
+         var count = await _counter.GetCount(cancellationToken);
          return $"{count}";
      }
 
     private async Task Increment()
     {
-        await _counter.IncrementAsync();
+        await _counter.Increment();
     }
 }

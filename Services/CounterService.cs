@@ -5,13 +5,13 @@ namespace FusionHybrid.Services;
 public class CounterService : ICounterService
 {
     private volatile int _count;
-    public virtual Task<int> GetCountAsync(CancellationToken cancellationToken) => Task.FromResult(_count);
+    public virtual Task<int> GetCount(CancellationToken cancellationToken) => Task.FromResult(_count);
 
-    public Task IncrementAsync(CancellationToken cancellationToken)
+    public Task Increment(CancellationToken cancellationToken)
     {
         Interlocked.Increment(ref _count);
         using (Computed.Invalidate())
-            GetCountAsync(cancellationToken);
+            GetCount(cancellationToken);
         return Task.CompletedTask;
     }
 

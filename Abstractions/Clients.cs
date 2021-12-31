@@ -1,11 +1,22 @@
 using RestEase;
 
-[BasePath("counter")]
+namespace FusionHybrid.Abstractions;
+
+[BasePath("Counter")]
 public interface ICounterClientDef
 {
-    [Post("IncrementAsync")]
-    Task IncrementAsync(CancellationToken cancellationToken = default);
+    [Post("Increment")]
+    Task Increment(CancellationToken cancellationToken = default);
 
-    [Get("GetCountAsync")]
-    Task<int> GetCountAsync(CancellationToken cancellationToken = default);
+    [Get("GetCount")]
+    Task<int> GetCount(CancellationToken cancellationToken = default);
+
+
+}
+
+[BasePath("WeatherForecast")]
+public interface IWeatherForecastClientDef
+{
+    [Get("GetForecast")]
+    Task<WeatherForecast[]> GetForecast(DateTime startDate, CancellationToken cancellationToken = default);
 }

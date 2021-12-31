@@ -6,22 +6,22 @@ namespace FusionHybrid.Server.Controllers;
 
 [Route("api/[controller]/[action]")]
 [ApiController, JsonifyErrors]
-public class CounterController : ControllerBase,ICounterService
+public class CounterController : ControllerBase, ICounterService
 {
     private readonly ICounterService _counterService;
 
     public CounterController(ICounterService counterService) => _counterService = counterService;
-    
 
-    [HttpGet,Publish]
-    public async Task<int> GetCountAsync(CancellationToken cancellationToken)
+
+    [HttpGet, Publish]
+    public async Task<int> GetCount(CancellationToken cancellationToken)
     {
-        return await _counterService.GetCountAsync(cancellationToken);
+        return await _counterService.GetCount(cancellationToken);
     }
 
-    [HttpPost,Publish]
-    public async Task IncrementAsync(CancellationToken cancellationToken)
+    [HttpPost, Publish]
+    public async Task Increment(CancellationToken cancellationToken)
     {
-        await _counterService.IncrementAsync(cancellationToken);
+        await _counterService.Increment(cancellationToken);
     }
 }

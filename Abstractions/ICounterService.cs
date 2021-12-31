@@ -5,6 +5,6 @@ namespace FusionHybrid.Abstractions;
 public interface ICounterService
 {
     [ComputeMethod]
-    Task<int> GetCountAsync(CancellationToken cancellationToken = default);
-    Task IncrementAsync(CancellationToken cancellationToken = default);
+    Task<int> GetCount(CancellationToken cancellationToken = default);
+    Task Increment(CancellationToken cancellationToken = default);
 }

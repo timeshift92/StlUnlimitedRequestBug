@@ -50,6 +50,7 @@ public class Program
 
         // Fusion service clients
         fusionClient.AddReplicaService<ICounterService, ICounterClientDef>();
+        fusionClient.AddReplicaService<IWeatherForecastService, IWeatherForecastClientDef>();
 
         ConfigureSharedServices(services);
     }

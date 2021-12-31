@@ -20,7 +20,7 @@ public class CustomBackendStatus : BackendStatus
         string backend,
         CancellationToken cancellationToken = default)
     {
-        await _counterService.GetCountAsync(cancellationToken);
+        await _counterService.GetCount(cancellationToken);
         return default;
     }
 }
