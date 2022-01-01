@@ -45,6 +45,8 @@ public class Startup
             }
         });
 
+        services.AddCors();
+
 #pragma warning disable ASP0000
         var tmpServices = services.BuildServiceProvider();
 #pragma warning restore ASP0000
@@ -113,6 +115,10 @@ public class Startup
 
         app.UseWebSockets(new WebSocketOptions() {
             KeepAliveInterval = TimeSpan.FromSeconds(30),
+        });
+
+        app.UseCors(c => {
+            c.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
         });
 
         // Static + Swagger

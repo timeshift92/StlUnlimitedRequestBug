@@ -19,12 +19,12 @@ public class Program
        if (OSInfo.Kind != OSKind.WebAssembly)
             throw new ApplicationException("This app runs only in browser.");
 
-        var builder = WebAssemblyHostBuilder.CreateDefault(args);
-        ConfigureServices(builder.Services, builder);
-        var host = builder.Build();
+       var builder = WebAssemblyHostBuilder.CreateDefault(args);
+       ConfigureServices(builder.Services, builder);
+       var host = builder.Build();
 
-        host.Services.HostedServices().Start();
-        return host.RunAsync();
+       host.Services.HostedServices().Start();
+       return host.RunAsync();
     }
 
     public static void ConfigureServices(IServiceCollection services, WebAssemblyHostBuilder builder)
