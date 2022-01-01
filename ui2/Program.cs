@@ -18,6 +18,7 @@ var Env = builder.HostEnvironment;
 builder.Services.AddLogging(logging => {
     logging.ClearProviders();
     logging.AddBrowserConsole();
+    logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
     logging.SetMinimumLevel(LogLevel.Information);
     if (Env.IsDevelopment()) {
         logging.AddFilter("Microsoft", LogLevel.Warning);
@@ -26,9 +27,6 @@ builder.Services.AddLogging(logging => {
     }
 });
 ConfigureServices(builder.Services, builder);
-
-
-
 
 var host = builder.Build();
 
@@ -43,7 +41,12 @@ void ConfigureServices(IServiceCollection services, WebAssemblyHostBuilder build
     var apiBaseUri = new Uri($"{baseUri}api/");
 
     // Fusion
+    
     var fusion = services.AddFusion();
+    fusion.AddFusionTime(); // IFusionTime is one of built-in compute services you can use
+    services.AddScoped<BlazorModeHelper>();
+
+    // Fusion services
     var fusionClient = fusion.AddRestEaseClient(
         (c, o) => {
             o.BaseUri = baseUri;
@@ -53,19 +56,16 @@ void ConfigureServices(IServiceCollection services, WebAssemblyHostBuilder build
         }).ConfigureHttpClientFactory(
         (c, name, o) => {
             var isFusionClient = (name ?? "").StartsWith("Stl.Fusion");
-            var clientBaseUri =  apiBaseUri;
+            var clientBaseUri = isFusionClient ? baseUri : apiBaseUri;
             o.HttpClientActions.Add(client => client.BaseAddress = clientBaseUri);
             
         });
-    
     services.AddScoped<BlazorModeHelper>();
     
 
     // Fusion service clients
-     fusion.AddFusionTime();
     fusionClient.AddReplicaService<ICounterService, ICounterClientDef>();
     fusionClient.AddReplicaService<IWeatherForecastService, IWeatherForecastClientDef>();
-    services.AddTransient<IUpdateDelayer>(c => new UpdateDelayer(c.UICommandTracker(), 0.1));
 
     ConfigureSharedServices(services);
 }
@@ -83,5 +83,5 @@ void ConfigureSharedServices(IServiceCollection services)
     services.AddSingleton(new SessionFactory().CreateSession());
 
     // Default update delay is set to min.
-    // services.AddTransient<IUpdateDelayer>(_ => UpdateDelayer.MinDelay);
+    services.AddTransient<IUpdateDelayer>(_ => UpdateDelayer.MinDelay);
 }
