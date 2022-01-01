@@ -1,3 +1,4 @@
+using Blazor.Extensions.Logging;
 using FusionHybrid.Abstractions;
 using FusionHybrid.Services;
 using Microsoft.AspNetCore.Components.Web;
@@ -16,6 +17,7 @@ var Env = builder.HostEnvironment;
 
 builder.Services.AddLogging(logging => {
     logging.ClearProviders();
+    logging.AddBrowserConsole();
     logging.SetMinimumLevel(LogLevel.Information);
     if (Env.IsDevelopment()) {
         logging.AddFilter("Microsoft", LogLevel.Warning);
