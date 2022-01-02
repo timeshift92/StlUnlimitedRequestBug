@@ -13,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using FusionHybrid.Abstractions;
 using FusionHybrid.Services;
 using Stl.Fusion.Blazor;
+using Stl.Fusion.Bridge;
 using Stl.Fusion.Extensions;
 using Stl.Fusion.Server;
 
@@ -45,8 +46,6 @@ public class Startup
             }
         });
 
-        services.AddCors();
-
 #pragma warning disable ASP0000
         var tmpServices = services.BuildServiceProvider();
 #pragma warning restore ASP0000
@@ -66,6 +65,12 @@ public class Startup
         ui2.UIStartup.ConfigureSharedServices(services);
 
         // Web
+        services.AddCors(cors => cors.AddDefaultPolicy(
+            policy => policy
+                .WithOrigins("https://localhost:7245", "https://localhost:5001")
+                .WithHeaders(FusionHeaders.RequestPublication)
+                .WithExposedHeaders(FusionHeaders.Publication)
+            ));
         services.Configure<ForwardedHeadersOptions>(options => {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             options.KnownNetworks.Clear();
@@ -117,10 +122,6 @@ public class Startup
             KeepAliveInterval = TimeSpan.FromSeconds(30),
         });
 
-        app.UseCors(c => {
-            c.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-        });
-
         // Static + Swagger
         app.UseBlazorFrameworkFiles();
         app.UseStaticFiles();
@@ -131,6 +132,7 @@ public class Startup
 
         // API controllers
         app.UseRouting();
+        app.UseCors();
         app.UseEndpoints(endpoints => {
             endpoints.MapBlazorHub();
             endpoints.MapFusionWebSocketServer();
