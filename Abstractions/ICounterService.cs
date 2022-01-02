@@ -1,5 +1,3 @@
-﻿using Stl.Fusion;
-
 namespace FusionHybrid.Abstractions;
 
 public interface ICounterService

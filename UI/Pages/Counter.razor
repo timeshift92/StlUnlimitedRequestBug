@@ -18,6 +18,9 @@
 </div>
 @if (error != null) {
     <div class="alert alert-warning" role="alert">Update error: @error.Message</div>
+    <pre>
+    @error.StackTrace
+    </pre>
 }
 
 

@@ -1,0 +1,61 @@
+@using FusionHybrid.Abstractions
+@inherits LayoutComponentBase
+@inject ICounterService counterService
+<PageTitle>BlazorServeClient</PageTitle>
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            @val
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+
+
+@code {
+    volatile IComputed<int> computed;
+    int val { get; set; }
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        computed = await Computed.Capture(ct =>
+        {
+            return counterService.GetCount();
+        });
+        await InvokeAsync(async () =>
+    {
+        await changedVal(computed);
+    }).ConfigureAwait(false);
+
+
+    }
+
+
+
+    async Task changedVal(IComputed _computed)
+    {
+        val = (int)computed.Value;
+    //    computed.Invalidated -= async (res) => await InvokeAsync(async () =>
+    //{
+    //    await changedVal(computed);
+    //}).ConfigureAwait(false);
+        computed = await computed.Update().ConfigureAwait(false);
+    //    computed.Invalidated += async (res) => await InvokeAsync(async () =>
+    //{
+    //    await changedVal(computed);
+    //}).ConfigureAwait(false);
+        StateHasChanged();
+    }
+
+}

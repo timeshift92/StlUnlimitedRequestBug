@@ -1,14 +1,14 @@
-using Stl.Fusion.Client;
-using Stl.OS;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
+using FusionHybrid.Abstractions;
+using FusionHybrid.Services;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Stl.DependencyInjection;
 using Stl.Fusion.Blazor;
+using Stl.Fusion.Client;
 using Stl.Fusion.Extensions;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Blazorise;
-using FusionHybrid.Abstractions;
-using Blazorise.Bootstrap;
-using FusionHybrid.Services;
-using Blazorise.Icons.FontAwesome;
+using Stl.OS;
 
 namespace FusionHybrid.UI;
 
@@ -16,15 +16,15 @@ public class Program
 {
     public static Task Main(string[] args)
     {
-       if (OSInfo.Kind != OSKind.WebAssembly)
+        if (OSInfo.Kind != OSKind.WebAssembly)
             throw new ApplicationException("This app runs only in browser.");
 
-       var builder = WebAssemblyHostBuilder.CreateDefault(args);
-       ConfigureServices(builder.Services, builder);
-       var host = builder.Build();
+        var builder = WebAssemblyHostBuilder.CreateDefault(args);
+        ConfigureServices(builder.Services, builder);
+        var host = builder.Build();
 
-       host.Services.HostedServices().Start();
-       return host.RunAsync();
+        host.Services.HostedServices().Start();
+        return host.RunAsync();
     }
 
     public static void ConfigureServices(IServiceCollection services, WebAssemblyHostBuilder builder)
@@ -62,6 +62,7 @@ public class Program
 
         // Other UI-related services
         var fusion = services.AddFusion();
+                
         fusion.AddBlazorUIServices();
         fusion.AddFusionTime();
         fusion.AddBackendStatus<CustomBackendStatus>();
@@ -72,5 +73,5 @@ public class Program
         // Default update delay is set to min.
         services.AddTransient<IUpdateDelayer>(_ => UpdateDelayer.MinDelay);
     }
-    
+
 }

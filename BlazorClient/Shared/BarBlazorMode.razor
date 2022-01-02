@@ -4,7 +4,14 @@
 @inject BlazorModeHelper _blazorModeHelper
 @inject IJSRuntime _js
 
-
+<BarDropdown Class="@CssClass">
+    <BarDropdownToggle>@(_isPrerendering ? "Loading..." : GetModeName(_isServerSideBlazor))</BarDropdownToggle>
+    <BarDropdownMenu RightAligned="true">
+        @foreach(var mode in new [] {true, false}) {
+            <BarDropdownItem Clicked="@(() => _blazorModeHelper.ChangeMode(mode))">@GetModeName(mode)</BarDropdownItem>
+        }
+    </BarDropdownMenu>
+</BarDropdown>
 
 @code {
     private bool _isPrerendering;

@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>2a34cec6-0795-4222-bbce-ffd8f1c4e8b9</UserSecretsId>
+		<RootNamespace>FusionHybrid.BlazorClient</RootNamespace>
+		<AssemblyName>FusionHybrid.BlazorClient</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Blazorise" Version="0.9.5.3" />
+		<PackageReference Include="Blazorise.Bootstrap" Version="0.9.5.3" />
+		<PackageReference Include="Blazorise.DataGrid" Version="0.9.5.3" />
+		<PackageReference Include="Blazorise.Icons.FontAwesome" Version="0.9.5.3" />
+		<PackageReference Include="Blazorise.Sidebar" Version="0.9.5.3" />
+
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.1" PrivateAssets="all" />
+		<PackageReference Include="Stl.Fusion" Version="2.2.17" />
+		<PackageReference Include="Stl.Fusion.Client" Version="2.2.17" />
+		<PackageReference Include="Stl.Fusion.Blazor" Version="2.2.17" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Abstractions\Abstractions.csproj" />
+		<ProjectReference Include="..\Services\Services.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Update="Shared\MainLayout.razor">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+		<Content Update="Shared\NavMenu.razor">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+		<Content Update="Shared\Note.razor">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+		<Content Update="Shared\StateOfStateBadge.razor">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+		<Content Update="Shared\TopBar.razor">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+		<Content Update="Shared\WhenCommandError.razor">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+		<Content Update="Shared\WhenException.razor">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+		<Content Update="Shared\WhenUpdateError.razor">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<UpToDateCheckInput Remove="Shared\BarBackendStatus.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<_ContentIncludedByDefault Remove="Shared\BarBackendStatus.razor" />
+		<_ContentIncludedByDefault Remove="Shared\BarBlazorMode.razor" />
+		<_ContentIncludedByDefault Remove="Shared\Error.razor" />
+		<_ContentIncludedByDefault Remove="Shared\LeftBar.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<UpToDateCheckInput Remove="Shared\BarBlazorMode.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<UpToDateCheckInput Remove="Shared\Error.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<UpToDateCheckInput Remove="Shared\LeftBar.razor" />
+	</ItemGroup>
+
+</Project>

@@ -1,5 +1,4 @@
 ﻿using FusionHybrid.Abstractions;
-using Stl.Fusion;
 
 namespace FusionHybrid.Services;
 public class CounterService : ICounterService

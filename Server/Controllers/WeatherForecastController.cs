@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using FusionHybrid.Abstractions;
+﻿using FusionHybrid.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 using Stl.Fusion.Server;
 
 namespace FusionHybrid.Server.Controllers;

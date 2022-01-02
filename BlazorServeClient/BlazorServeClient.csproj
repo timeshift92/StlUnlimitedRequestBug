@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Stl.Fusion" Version="2.2.16" />
+		<PackageReference Include="Stl.Fusion.Client" Version="2.2.16" />
+		<PackageReference Include="Stl.Fusion.Blazor" Version="2.2.16" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Abstractions\Abstractions.csproj" />
+		<ProjectReference Include="..\Services\Services.csproj" />
+	</ItemGroup>
+
+</Project>

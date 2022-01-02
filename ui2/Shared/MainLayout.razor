@@ -1,7 +1,7 @@
-﻿@inherits LayoutComponentBase
+@using FusionHybrid.Abstractions
+@inherits LayoutComponentBase
 
-<BarBackendStatus />
-<BarBlazorMode />
+@inject ICounterService counterService
 
 <div class="page">
     <div class="sidebar">
@@ -18,3 +18,19 @@
         </article>
     </main>
 </div>
+
+
+@code {
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        var computed = await Computed.Capture(ct => counterService.GetCount());
+        while (true)
+        {
+            System.Console.WriteLine($"- {computed.Value}");
+            await computed.WhenInvalidated();
+            computed = await computed.Update();
+        }
+    }
+}

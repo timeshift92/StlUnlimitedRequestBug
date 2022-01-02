@@ -1,18 +1,13 @@
-using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.StaticWebAssets;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using FusionHybrid.Abstractions;
 using FusionHybrid.Services;
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.OpenApi.Models;
 using Stl.Fusion.Blazor;
+using Stl.Fusion.Bridge;
 using Stl.Fusion.Extensions;
 using Stl.Fusion.Server;
 
@@ -45,7 +40,13 @@ public class Startup
             }
         });
 
-        services.AddCors();
+        //services.AddCors();
+        services.AddCors(cors => cors.AddDefaultPolicy(
+           policy => policy
+               .WithOrigins("https://localhost:7245","http://localhost:5029", "https://localhost:5001")
+               .WithFusionHeaders()
+               
+           ));
 
 #pragma warning disable ASP0000
         var tmpServices = services.BuildServiceProvider();
@@ -108,19 +109,32 @@ public class Startup
             app.UseExceptionHandler("/Error");
             app.UseHsts();
         }
-        app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
         app.UseForwardedHeaders(new ForwardedHeadersOptions {
             ForwardedHeaders = ForwardedHeaders.XForwardedProto
         });
 
-        app.UseWebSockets(new WebSocketOptions() {
-            KeepAliveInterval = TimeSpan.FromSeconds(30),
-        });
 
-        app.UseCors(c => {
-            c.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-        });
 
+
+        var webSocketOptions = new WebSocketOptions() {
+            KeepAliveInterval = TimeSpan.FromSeconds(120),
+
+        };
+        webSocketOptions.AllowedOrigins.Add("https://localhost:7245");
+        webSocketOptions.AllowedOrigins.Add("https://localhost:5001");
+        webSocketOptions.AllowedOrigins.Add("http://localhost:5029");
+        webSocketOptions.AllowedOrigins.Add("http://localhost:59783");
+
+        app.UseWebSockets(webSocketOptions);
+
+        //app.UseCors(c => {
+        //    c.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+        //    c.WithOrigins("http://localhost:5029", "http://localhost:5029/", "https://localhost:7245", "https://localhost:7245/"
+        //        , "http://localhost:59783/", "http://localhost:59783"
+        //        );
+        //});
+         app.UseCors();
         // Static + Swagger
         app.UseBlazorFrameworkFiles();
         app.UseStaticFiles();
