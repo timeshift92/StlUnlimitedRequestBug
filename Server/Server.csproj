@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UI\UI.csproj" />
+    <ProjectReference Include="..\ui2\ui2.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 

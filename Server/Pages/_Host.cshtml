@@ -1,7 +1,7 @@
 ﻿@page "/"
 @namespace FusionHybrid.Server.Pages
-@using FusionHybrid.UI
 @using Stl.Fusion.Server.Controllers
+@using ui2
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     var isServerSideBlazor = BlazorModeController.IsServerSideBlazor(HttpContext);
@@ -16,7 +16,6 @@
     <title>FusionHybrid</title>
     <base href="~/" />
     <link href="css/app.css" rel="stylesheet" />
-    <partial name="Blazorise.Head" />
 </head>
 
 <body>
@@ -37,8 +36,6 @@
         <a class="dismiss">🗙</a>
     </div>
 
-    <partial name="Blazorise.Body" />
-    <script type="module" src="./js/app.js"></script>
     <script src='_framework/blazor.@(isServerSideBlazor ? "server" : "webassembly").js'></script>
 </body>
 </html>
