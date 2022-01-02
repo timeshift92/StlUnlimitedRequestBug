@@ -13,7 +13,6 @@ using Microsoft.OpenApi.Models;
 using FusionHybrid.Abstractions;
 using FusionHybrid.Services;
 using Stl.Fusion.Blazor;
-using Stl.Fusion.Bridge;
 using Stl.Fusion.Extensions;
 using Stl.Fusion.Server;
 
@@ -68,8 +67,7 @@ public class Startup
         services.AddCors(cors => cors.AddDefaultPolicy(
             policy => policy
                 .WithOrigins("https://localhost:7245", "https://localhost:5001")
-                .WithHeaders(FusionHeaders.RequestPublication)
-                .WithExposedHeaders(FusionHeaders.Publication)
+                .WithFusionHeaders()
             ));
         services.Configure<ForwardedHeadersOptions>(options => {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
