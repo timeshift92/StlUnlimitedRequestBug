@@ -13,7 +13,7 @@ public static class UIStartup
     {
         builder.Logging.SetMinimumLevel(LogLevel.Warning);
 
-        var baseUri = new Uri(builder.HostEnvironment.BaseAddress);
+        var baseUri = new Uri("https://localhost:5001");
         var apiBaseUri = new Uri($"{baseUri}api/");
 
         // Fusion
