@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>ui2</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,9 +12,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
-    <PackageReference Include="Stl.Fusion.Blazor" Version="2.2.16" />
-    <PackageReference Include="Stl.Fusion.Client" Version="2.2.16" />
-	  
+    <PackageReference Include="Stl.Fusion.Blazor" Version="2.2.17" />
     <PackageReference Include="UAParser" Version="3.1.47" />
   </ItemGroup>
 

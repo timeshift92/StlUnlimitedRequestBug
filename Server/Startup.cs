@@ -40,14 +40,6 @@ public class Startup
             }
         });
 
-        //services.AddCors();
-        services.AddCors(cors => cors.AddDefaultPolicy(
-           policy => policy
-               .WithOrigins("https://localhost:7245","http://localhost:5029", "https://localhost:5001")
-               .WithFusionHeaders()
-               
-           ));
-
 #pragma warning disable ASP0000
         var tmpServices = services.BuildServiceProvider();
 #pragma warning restore ASP0000
@@ -64,9 +56,14 @@ public class Startup
         fusion.AddComputeService<IWeatherForecastService, WeatherForecastService>();
 
         // Shared UI services
-        UI.Program.ConfigureSharedServices(services);
+        ui2.UIStartup.ConfigureSharedServices(services);
 
         // Web
+        services.AddCors(cors => cors.AddDefaultPolicy(
+            policy => policy
+                .WithOrigins("https://localhost:7245", "https://localhost:5001")
+                .WithFusionHeaders()
+            ));
         services.Configure<ForwardedHeadersOptions>(options => {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             options.KnownNetworks.Clear();
@@ -96,7 +93,7 @@ public class Startup
         if (!Directory.Exists(Path.Combine(wwwRootPath, "_framework")))
             // This is a regular build, not a build produced w/ "publish",
             // so we remap wwwroot to the client's wwwroot folder
-            wwwRootPath = Path.GetFullPath(Path.Combine(baseDir, $"../../../../UI/{binCfgPart}/net6.0/wwwroot"));
+            wwwRootPath = Path.GetFullPath(Path.Combine(baseDir, $"../../../../ui2/{binCfgPart}/net6.0/wwwroot"));
         Env.WebRootPath = wwwRootPath;
         Env.WebRootFileProvider = new PhysicalFileProvider(Env.WebRootPath);
         StaticWebAssetsLoader.UseStaticWebAssets(Env, Cfg);
@@ -115,26 +112,6 @@ public class Startup
         });
 
 
-
-
-        var webSocketOptions = new WebSocketOptions() {
-            KeepAliveInterval = TimeSpan.FromSeconds(120),
-
-        };
-        webSocketOptions.AllowedOrigins.Add("https://localhost:7245");
-        webSocketOptions.AllowedOrigins.Add("https://localhost:5001");
-        webSocketOptions.AllowedOrigins.Add("http://localhost:5029");
-        webSocketOptions.AllowedOrigins.Add("http://localhost:59783");
-
-        app.UseWebSockets(webSocketOptions);
-
-        //app.UseCors(c => {
-        //    c.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-        //    c.WithOrigins("http://localhost:5029", "http://localhost:5029/", "https://localhost:7245", "https://localhost:7245/"
-        //        , "http://localhost:59783/", "http://localhost:59783"
-        //        );
-        //});
-         app.UseCors();
         // Static + Swagger
         app.UseBlazorFrameworkFiles();
         app.UseStaticFiles();
@@ -145,6 +122,7 @@ public class Startup
 
         // API controllers
         app.UseRouting();
+        app.UseCors();
         app.UseEndpoints(endpoints => {
             endpoints.MapBlazorHub();
             endpoints.MapFusionWebSocketServer();
