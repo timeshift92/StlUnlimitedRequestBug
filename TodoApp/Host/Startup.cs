@@ -139,7 +139,7 @@ public class Startup
 
         // ASP.NET Core authentication providers
         services.AddAuthentication(options => {
-            
+
             options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = "oidc";
         }).AddCookie("Cookies",options => {
@@ -148,15 +148,13 @@ public class Startup
             options.Cookie.SameSite = SameSiteMode.Lax;
             if (Env.IsDevelopment())
                 options.Cookie.SecurePolicy = CookieSecurePolicy.None;
-        })
-        .AddOpenIdConnect("oidc", options => {
+        }).AddOpenIdConnect("oidc", options => {
             options.Authority = "https://auth.utc.uz:44310/";
-
             options.ClientId = "TodoService";
             options.ClientSecret = "a4e4e19c-7a3d-8645-9287-f274fd35e34e";
             options.ResponseType = "code";
-            options.NonceCookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
-            options.CorrelationCookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
+            options.NonceCookie.SecurePolicy = CookieSecurePolicy.Always;
+            options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
             options.GetClaimsFromUserInfoEndpoint = true;
             options.MapInboundClaims = true;
             //options.TokenValidationParameters = new TokenValidationParameters {
@@ -175,13 +173,13 @@ public class Startup
             // options.Scope.Add("email");
             options.Scope.Add("roles");
             options.Scope.Add("Auth_api");
-            
+
             options.ClaimActions.MapJsonKey(ClaimTypes.Name, "Name");
             // options.ClaimActions.MapJsonKey("role", "role", "role"); //And this
             // options.TokenValidationParameters.RoleClaimType = "role"; //And als
 
             // options.SignInScheme = "Cookies";
-            
+
             options.SaveTokens = true;
 
 
@@ -205,7 +203,7 @@ public class Startup
         services.AddRouting();
         services.AddMvc().AddApplicationPart(Assembly.GetExecutingAssembly());
         services.AddServerSideBlazor(o => o.DetailedErrors = true);
-        
+
         services.AddScoped<IAuthorizationHandler,
                           ContactIsOwnerAuthorizationHandler>();
         fusionAuth.AddBlazor(o => { }); // Must follow services.AddServerSideBlazor()!
@@ -221,6 +219,21 @@ public class Startup
     public void Configure(IApplicationBuilder app, ILogger<Startup> log)
     {
         Log = log;
+
+        // This fixes an issue when OIDC server redirects w/ POST (i.e. via form) instead of GET
+        app.Use(async (ctx, next) =>
+        {
+            await next();
+
+            var request = ctx.Request;
+            var response = ctx.Response;
+            if (request.Path == "/signin-oidc" && request.Method == "POST" && response.StatusCode == 302)
+            {
+                var cookies = response.Headers.SetCookie.ToArray();
+                cookies = cookies.Where(c => !c.StartsWith("FusionAuth.SessionId=")).ToArray();
+                response.Headers.SetCookie = cookies;
+            }
+        });
 
         // This server serves static content from Blazor Client,
         // and since we don't copy it to local wwwroot,
