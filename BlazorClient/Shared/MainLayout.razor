@@ -33,9 +33,6 @@
 
     protected override void OnInitialized()
     {
-        #if DEBUG
-    Thread.Sleep(10000);
-#endif
         _nav.LocationChanged += OnLocationChanged;
         _commandFailureList.Changed += OnCommandFailureListChanged;
     }
