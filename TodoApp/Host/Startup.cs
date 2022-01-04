@@ -148,9 +148,7 @@ public class Startup
             options.Cookie.SameSite = SameSiteMode.Lax;
             if (Env.IsDevelopment())
                 options.Cookie.SecurePolicy = CookieSecurePolicy.None;
-        })
-        .AddOpenIdConnect("oidc", options => {
-            options.AuthenticationMethod = OpenIdConnectRedirectBehavior.RedirectGet;
+        }).AddOpenIdConnect("oidc", options => {
             options.Authority = "https://auth.utc.uz:44310/";
             options.ClientId = "TodoService";
             options.ClientSecret = "a4e4e19c-7a3d-8645-9287-f274fd35e34e";
